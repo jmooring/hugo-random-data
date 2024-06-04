@@ -1,0 +1,13 @@
+{{- $maxObjects := 20 }}
+{{- $numObjects := math.Rand | mul $maxObjects | math.Ceil | int }}
+{{- $firstLoremElement := math.Rand | mul (sub (len site.Data.lorem) (add $maxObjects 1)) | math.Ceil | int }}
+
+{{- $s := slice }}
+{{- range seq $numObjects }}
+  {{- $content := index site.Data.lorem $firstLoremElement }}
+  {{- $title := strings.Truncate 30 "" $content | replaceRE `[^a-zA-Z\s]` "" }}
+  {{- $lastmod := now.Format "2006-01-02T15:04:05-07:00" }}
+  {{- $s = $s | append (dict "content" $content "title" $title "lastmod" $lastmod) }}
+  {{- $firstLoremElement = add $firstLoremElement 1 }}
+{{- end }}
+{{- jsonify (dict "indent" "  ") $s }}

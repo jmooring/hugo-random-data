@@ -1,0 +1,4 @@
+disableKinds = ['page','rss','section','sitemap','taxonomy','term']
+
+[outputs]
+home = 'json'
